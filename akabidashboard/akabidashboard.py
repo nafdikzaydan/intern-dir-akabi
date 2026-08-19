@@ -169,7 +169,7 @@ def calculate_monthly_item_sales(df, date_column, product_column, qty_column):
         st.error("Kolom tidak ditemukan di DataFrame!")
         return pd.DataFrame()
 
-total_luaspanen = calculate_total(df_aja, 'tahun', 'Provinsi', 'Luas Panen (Ha)') 
+total_luaspanen = calculate_total(df_master, 'tahun', 'Provinsi', 'Luas Panen (Ha)') 
 #income
 total_revenue = calculate_total(df_revenue, 'Revenue', date_column='Tanggal')
 total_grossprofit = calculate_total(df_revenue, 'Gross Profit', date_column='Tanggal')
