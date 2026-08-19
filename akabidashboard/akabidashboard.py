@@ -135,7 +135,7 @@ def main():
     st.bar_chart(
         chart_provitas,
         x_label="Tahun",
-        y_label="Produktivitas (Ku/Ha"
+        y_label="Produktivitas (Ku/Ha)"
     )
 
 
