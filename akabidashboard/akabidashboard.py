@@ -100,6 +100,7 @@ total_luaspanen = calculate_total(
 
 total_provitas = calculate_total(df_master, "Tahun", "Provinsi", "Produktivitas (Ku/Ha)")
 
+
 # =========================
 # FORMAT CHART
 # =========================
