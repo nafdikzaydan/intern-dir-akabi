@@ -56,13 +56,11 @@ except Exception as e:
 
 
 def calculate_total(df, group_col1, group_col2, value_col):
-    if value_col in df.columns and group_col1 in df.columns:
-            
-        result = df.groupby(group_col1, group_col2)[value_col].count().reset_index()
+    if group_col1 in df.columns and group_col2 in df.columns and value_col in df.columns:
+        result = df.groupby([group_col1, group_col2])[value_col].count().reset_index()
         return result
     else:
-        # Jika kamu pakai Streamlit (st.error), pastikan library sudah di-import
-        print(f"Kolom '{group_col1, group_col2}' atau '{value_col}' tidak ditemukan!")
+        print(f"Kolom tidak ditemukan!")
         return pd.DataFrame()
 
 # def calculate_total(df, column_name, date_column='Tanggal'):
