@@ -44,7 +44,7 @@ def get_data(nama_sheet):
 # df_SL = pd.read_excel('Form Capaian PRSDI.xlsx', sheet_name='SL')
 # dfl_SL = get_data()
 try:
-    df_aja = get_data("MASTER SHEET")
+    df_master = get_data("MASTER SHEET")
     df_revenue = get_data("Trans_Penjualan")
     df_expense = get_data("Expense")
 
