@@ -44,7 +44,7 @@ def get_data(nama_sheet):
 # df_SL = pd.read_excel('Form Capaian PRSDI.xlsx', sheet_name='SL')
 # dfl_SL = get_data()
 try:
-    df_master = get_data("MASTER SHEET")
+    df_aja = get_data("MASTER SHEET")
     df_revenue = get_data("Trans_Penjualan")
     df_expense = get_data("Expense")
 
@@ -169,7 +169,7 @@ def calculate_monthly_item_sales(df, date_column, product_column, qty_column):
         st.error("Kolom tidak ditemukan di DataFrame!")
         return pd.DataFrame()
 
-total_luaspanen = calculate_total(df_master, 'tahun', 'Provinsi', 'Luas Panen (Ha)') 
+total_luaspanen = calculate_total(df_aja, 'tahun', 'Provinsi', 'Luas Panen (Ha)') 
 #income
 total_revenue = calculate_total(df_revenue, 'Revenue', date_column='Tanggal')
 total_grossprofit = calculate_total(df_revenue, 'Gross Profit', date_column='Tanggal')
