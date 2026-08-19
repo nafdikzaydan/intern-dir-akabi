@@ -110,7 +110,7 @@ chart_luaspanen = total_luaspanen.pivot(
     values="Luas Panen (Ha)"
 )
 
-chart_luaspanen = total_luaspanen.pivot(
+chart_provitas = total_luaspanen.pivot(
     index="Tahun",
     columns="Provinsi",
     values="Produktivitas (Ku/Ha)"
@@ -131,8 +131,8 @@ def main():
         y_label="Luas Panen (Ha)"
     )
 
-    st.line_chart(
-        chart_luaspanen,
+    st.bar_chart(
+        chart_provitas,
         x_label="Tahun",
         y_label="Produktivitas (Ku/Ha"
     )
