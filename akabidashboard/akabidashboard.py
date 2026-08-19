@@ -18,7 +18,7 @@ sys.stderr.reconfigure(encoding='utf-8')
 
 st_autorefresh(interval=60 * 1000)
 st.set_page_config(layout="wide")
-st.title('Dashboard Visualisasi Data')
+st.title('Dashboard Visualisasi Data Kedelai')
 # Refresh page every 60 seconds
 
 @st.cache_data(ttl=60)
