@@ -98,6 +98,7 @@ total_luaspanen = calculate_total(
     "Luas Panen (Ha)"
 )
 
+total_provitas = calculate_total(df_master, "Tahun", "Provinsi", "Produktivitas (Ku/Ha)")
 
 # =========================
 # FORMAT CHART
@@ -107,6 +108,12 @@ chart_luaspanen = total_luaspanen.pivot(
     index="Tahun",
     columns="Provinsi",
     values="Luas Panen (Ha)"
+)
+
+chart_luaspanen = total_luaspanen.pivot(
+    index="Tahun",
+    columns="Provinsi",
+    values="Produktivitas (Ku/Ha)"
 )
 
 
@@ -122,6 +129,12 @@ def main():
         chart_luaspanen,
         x_label="Tahun",
         y_label="Luas Panen (Ha)"
+    )
+
+    st.line_chart(
+        chart_luaspanen,
+        x_label="Tahun",
+        y_label="Produktivitas (Ku/Ha"
     )
 
 
