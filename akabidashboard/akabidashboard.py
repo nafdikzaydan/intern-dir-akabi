@@ -110,7 +110,7 @@ chart_luaspanen = total_luaspanen.pivot(
     values="Luas Panen (Ha)"
 )
 
-chart_provitas = total_luaspanen.pivot(
+chart_provitas = total_provitas.pivot(
     index="Tahun",
     columns="Provinsi",
     values="Produktivitas (Ku/Ha)"
