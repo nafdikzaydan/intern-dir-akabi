@@ -1,72 +1,129 @@
 import streamlit as st
-import plotly.express as px
 import pandas as pd
-from pyvis.network import Network
-import os
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2.service_account import Credentials
-import io
-from IPython.core.display import HTML
-import sys
-import matplotlib.pyplot as plt
 from streamlit_autorefresh import st_autorefresh
-import calendar
-from datetime import datetime
-sys.stdout.reconfigure(encoding='utf-8')
-sys.stderr.reconfigure(encoding='utf-8')
+
+st.set_page_config(layout="wide")
+st.title("Dashboard Visualisasi Data Kedelai")
 
 st_autorefresh(interval=60 * 1000)
-st.set_page_config(layout="wide")
-st.title('Dashboard Visualisasi Data Kedelai')
-# Refresh page every 60 seconds
+
 
 @st.cache_data(ttl=60)
 def get_data(nama_sheet):
-    # Tentukan scope untuk mengakses Google Sheets dan Google Drive
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    scope = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive"
+    ]
 
-    # Autentikasi menggunakan secrets dari Streamlit Cloud
     credentials = Credentials.from_service_account_info(
         st.secrets["gcp_service_account"],
         scopes=scope
     )
-    
+
     client = gspread.authorize(credentials)
 
-    # Akses Google Spreadsheet
     spreadsheet = client.open("REKAP DATA PER BULAN")
     sheet = spreadsheet.worksheet(nama_sheet)
-    data = sheet.get_all_records()
-    df = pd.DataFrame(data)
-    return df
 
-# df_SL = pd.read_excel('Form Capaian PRSDI.xlsx', sheet_name='SL')
-# dfl_SL = get_data()
+    data = sheet.get_all_records()
+
+    return pd.DataFrame(data)
+
+
+# =========================
+# LOAD DATA
+# =========================
+
 try:
     df_master = get_data("MASTER SHEET")
-   
-    # Cek hasil
-    st.success("Data berhasil dimuat!")
-    
+
+    st.success(
+        f"Data berhasil dimuat! "
+        f"{len(df_master)} baris."
+    )
+
 except Exception as e:
     st.error(f"Gagal mengambil data: {e}")
+    st.stop()
 
+
+# =========================
+# HITUNG LUAS PANEN
+# =========================
 
 def calculate_total(df, group_col1, group_col2, value_col):
-    if group_col1 in df.columns and group_col2 in df.columns and value_col in df.columns:
-        result = df.groupby([group_col1, group_col2])[value_col].sum().reset_index()
-        return result
-    else:
-        print(f"Kolom tidak ditemukan!")
+
+    required_columns = [
+        group_col1,
+        group_col2,
+        value_col
+    ]
+
+    missing_columns = [
+        col for col in required_columns
+        if col not in df.columns
+    ]
+
+    if missing_columns:
+        st.error(
+            f"Kolom tidak ditemukan: {missing_columns}"
+        )
         return pd.DataFrame()
 
-total_luaspanen = calculate_total(df_master, 'tahun', 'Provinsi', 'Luas Panen (Ha)') 
+    # Pastikan luas panen berupa angka
+    df = df.copy()
 
-# Streamlit App
+    df[value_col] = pd.to_numeric(
+        df[value_col],
+        errors="coerce"
+    ).fillna(0)
+
+    result = (
+        df.groupby(
+            [group_col1, group_col2]
+        )[value_col]
+        .sum()
+        .reset_index()
+    )
+
+    return result
+
+
+total_luaspanen = calculate_total(
+    df_master,
+    "tahun",
+    "Provinsi",
+    "Luas Panen (Ha)"
+)
+
+
+# =========================
+# FORMAT CHART
+# =========================
+
+chart_luaspanen = total_luaspanen.pivot(
+    index="tahun",
+    columns="Provinsi",
+    values="Luas Panen (Ha)"
+)
+
+
+# =========================
+# DASHBOARD
+# =========================
+
 def main():
+
     st.title("Luas Panen")
-    st.line_chart(total_luaspanen)
-            
+
+    st.line_chart(
+        chart_luaspanen,
+        x_label="Tahun",
+        y_label="Luas Panen (Ha)"
+    )
+
+
 if __name__ == "__main__":
     main()
