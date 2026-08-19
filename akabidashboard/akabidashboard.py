@@ -56,7 +56,7 @@ except Exception as e:
 
 
 def calculate_total(df, group_col1, group_col2, value_col):
-    if target_column in df.columns and group_column in df.columns:
+    if value_col in df.columns and group_col1, group_col2 in df.columns:
             
         result = df.groupby(group_col1, group_col2)[value_col].count().reset_index()
         return result
