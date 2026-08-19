@@ -104,7 +104,7 @@ total_luaspanen = calculate_total(
 # =========================
 
 chart_luaspanen = total_luaspanen.pivot(
-    index="tahun",
+    index="Tahun",
     columns="Provinsi",
     values="Luas Panen (Ha)"
 )
