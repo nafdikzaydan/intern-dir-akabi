@@ -93,7 +93,7 @@ def calculate_total(df, group_col1, group_col2, value_col):
 
 total_luaspanen = calculate_total(
     df_master,
-    "tahun",
+    "Tahun",
     "Provinsi",
     "Luas Panen (Ha)"
 )
